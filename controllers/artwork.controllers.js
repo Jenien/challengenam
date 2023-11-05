@@ -136,4 +136,47 @@ module.exports = {
       });
     }
   },
+  editArtwork: async (req, res, next) => {
+    try {
+      const fileId = req.params.fileId;
+      const { title, description } = req.body;
+  
+      const existingArtwork = await prisma.artwork.findFirst({
+        where: {
+          fileId: fileId,
+        },
+      });
+  
+      if (!existingArtwork) {
+        return res.status(404).json({
+          status: false,
+          message: 'Artwork not found',
+          data: null,
+        });
+      }
+  
+      const updatedArtwork = await prisma.artwork.update({
+        where: {
+          id: existingArtwork.id,
+        },
+        data: {
+          title: title || existingArtwork.title,
+          description: description || existingArtwork.description,
+        },
+      });
+  
+      return res.status(200).json({
+        status: true,
+        message: 'OK!',
+        data: { updatedArtwork },
+      });
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({
+        status: false,
+        message: 'Internal Server Error',
+        data: null,
+      });
+    }
+  },  
 };  
