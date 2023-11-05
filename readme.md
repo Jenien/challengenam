@@ -1,46 +1,88 @@
-1. Register
-(POST) POST http://localhost:1202/api/v1/authenticate/register
-Application/json
-nama : string
-email : string@gmail.com (email tidak bisa sama)
-password : string
-password_confirmation: string (samain kaya password)
+# Panduan Penggunaan API
 
-2. LOGIN
-(POST) POST http://localhost:1202/api/v1/authenticate/login
-Application/json
-email : string@gmail.com
-password : string
+## 1. Registrasi
 
-3. INPUT ART(GAMBAR)
-(PUT) http://localhost:1202/api/v1/artwork/upload
-Auth bearer (Token di dapat dari Login)
-multipart form
-title: string
-description : string
-imageArt : gambar/jpg/jpeg/image
+### Endpoint:
+- Method: POST
+- URL: http://localhost:1202/api/v1/authenticate/register
 
-4. LIST GAMBAR
-(GET) http://localhost:1202/api/v1/artwork/list
-Auth bearer (Token di dapat dari Login)
-Application/json
+### Headers:
+- Content-Type: Application/json
 
-5. DETAIL GAMBAR FILEID
-(GET) http://localhost:1202/api/v1/artwork/view/{fileId}
-Auth bearer (Token di dapat dari Login)
-Application/json
+### Body:
+- nama: string
+- email: string@gmail.com (email harus unik)
+- password: string
+- password_confirmation: string (sama dengan password)
 
-6. HAPUS GAMBAR FILEID
-(DELETE) http://localhost:1202/api/v1/artwork/delete/{fileId}
-Auth bearer (Token di dapat dari Login)
-Application/json
+## 2. Login
 
-7. UBAH ISI 
-(PUT) http://localhost:1202/api/v1/artwork/edit/{fileId}
-Auth bearer (Token di dapat dari Login)
-Application/json
-title:string
-description:string
+### Endpoint:
+- Method: POST
+- URL: http://localhost:1202/api/v1/authenticate/login
 
-Aku menjalankannya di insomnia, jika tidak ada bisa menggunakan postman ya teman teman
+### Headers:
+- Content-Type: Application/json
 
+### Body:
+- email: string@gmail.com
+- password: string
+
+## 3. Unggah Gambar (Input Artwork)
+
+### Endpoint:
+- Method: PUT
+- URL: http://localhost:1202/api/v1/artwork/upload
+
+### Headers:
+- Auth Bearer (Token didapatkan dari Login)
+- Content-Type: multipart/form-data
+
+### Body:
+- title: string
+- description: string
+- imageArt: gambar/jpg/jpeg/image
+
+## 4. Daftar Gambar
+
+### Endpoint:
+- Method: GET
+- URL: http://localhost:1202/api/v1/artwork/list
+
+### Headers:
+- Auth Bearer (Token didapatkan dari Login)
+- Content-Type: Application/json
+
+## 5. Detail Gambar berdasarkan File ID
+
+### Endpoint:
+- Method: GET
+- URL: http://localhost:1202/api/v1/artwork/view/{fileId}
+
+### Headers:
+- Auth Bearer (Token didapatkan dari Login)
+- Content-Type: Application/json
+
+## 6. Hapus Gambar berdasarkan File ID
+
+### Endpoint:
+- Method: DELETE
+- URL: http://localhost:1202/api/v1/artwork/delete/{fileId}
+
+### Headers:
+- Auth Bearer (Token didapatkan dari Login)
+- Content-Type: Application/json
+
+## 7. Edit Isi Gambar berdasarkan File ID
+
+### Endpoint:
+- Method: PUT
+- URL: http://localhost:1202/api/v1/artwork/edit/{fileId}
+
+### Headers:
+- Auth Bearer (Token didapatkan dari Login)
+- Content-Type: Application/json
+
+### Body:
+- title: string
+- description: string
