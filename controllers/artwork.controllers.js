@@ -1,6 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const imagekit = require('../libs/imagekit');
+const {imagekit} = require('../libs/imagekit');
 const path = require('path');
 
 module.exports = {
@@ -96,32 +96,44 @@ module.exports = {
   deleteImageArt: async (req, res, next) => {
     try {
       const fileId = req.params.fileId;
-      
-      const deletedArtwork = await prisma.artwork.delete({
+  
+      const existingArtwork = await prisma.artwork.findFirst({
         where: {
           fileId: fileId,
         },
+        include: {
+          user: true, 
+        },
       });
-
-      if (!deletedArtwork) {
-        return res.status(400).json({
+  
+      if (!existingArtwork) {
+        return res.status(404).json({
           status: false,
-          message: 'Bad Request!',
-          err: 'Artwork with fileId not found',
+          message: 'Artwork not found',
           data: null,
         });
       }
-
+  
       await imagekit.deleteFile(fileId);
-
+  
+      const deletedArtwork = await prisma.artwork.delete({
+        where: {
+          id: existingArtwork.id, 
+        },
+      });
+  
       return res.status(200).json({
         status: true,
         message: 'OK!',
-        err: null,
         data: { deletedArtwork },
       });
     } catch (err) {
-      next(err);
+      console.error(err);
+      return res.status(500).json({
+        status: false,
+        message: 'Internal Server Error',
+        data: null,
+      });
     }
   },
-};
+};  
