@@ -1,8 +1,18 @@
-const Imagekit = require('imagekit');
-// const { IMAGEKIT_PUBLIC_KEY, IMAGEKIT_PRIVATE_KEY, IMAGEKIT_URL_ENDPOINT } = process.env;
+const imagekit = require('imagekit');
 
-module.exports = new Imagekit({
-  publicKey : "public_OUtjwPstBsf8imAw1lvYOzyICps=",
-  privateKey : "private_x5BJmHRkJzH9zQC8vPqzx9lofAw=",
-  urlEndpoint : "https://ik.imagekit.io/jeniriska"
+const imagekitClient = new imagekit({
+  publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
+  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT,
 });
+
+module.exports = {
+  deleteFile: async (fileId) => {
+    try {
+      const response = await imagekitClient.deleteFile(fileId);
+      return response;
+    } catch (error) {
+      throw new Error(`Error deleting file: ${error.message}`);
+    }
+  },
+};

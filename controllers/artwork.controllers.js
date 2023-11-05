@@ -93,4 +93,35 @@ module.exports = {
       next(error);
     }
   },
+  deleteImageArt: async (req, res, next) => {
+    try {
+      const fileId = req.params.fileId;
+      
+      const deletedArtwork = await prisma.artwork.delete({
+        where: {
+          fileId: fileId,
+        },
+      });
+
+      if (!deletedArtwork) {
+        return res.status(400).json({
+          status: false,
+          message: 'Bad Request!',
+          err: 'Artwork with fileId not found',
+          data: null,
+        });
+      }
+
+      await imagekit.deleteFile(fileId);
+
+      return res.status(200).json({
+        status: true,
+        message: 'OK!',
+        err: null,
+        data: { deletedArtwork },
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
 };
