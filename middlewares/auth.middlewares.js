@@ -6,15 +6,6 @@ const { JWT_SECRET_KEY } = process.env;
 module.exports = {
   restrinct: (req, res, next) => {
     let { authorization } = req.headers;
-    if (!authorization) {
-      return res.status(401).json({
-        status: false,
-        message: 'Unauthorized',
-        err: 'Missing token on header',
-        data: null,
-      });
-    }
-  
     const token = authorization.split(' ')[1];
     if (!token) {
       return res.status(401).json({
@@ -24,7 +15,7 @@ module.exports = {
         data: null,
       });
     }
-  
+
     jwt.verify(token, JWT_SECRET_KEY, async (err, decoded) => {
       if (err) {
         return res.status(401).json({
@@ -34,10 +25,13 @@ module.exports = {
           data: null,
         });
       }
-  
-      req.user = await prisma.user.findUnique({ where: { id: decoded.id } });
-      req.Artwork = await prisma.Artwork.findUnique({ where: { userId: decoded.id } });
-      next();
+
+      try {
+        req.user = await prisma.user.findUnique({ where: { id: decoded.id } });
+        next();
+      } catch (error) {
+        next(error);
+      }
     });
   },
-};  
+};

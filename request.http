@@ -1,21 +1,18 @@
-POST http://localhost:1210/api/v1/authenticate/register
+POST http://localhost:1202/api/v1/authenticate/register
 Content-Type: application/json
 
 {
   "nama":"namakuh",
-  "email": "namake2@gmail.com",
+  "email": "namake1@gmail.com",
   "password": "nama",
   "password_confirmation": "nama"
 }
 
 ###
-POST http://localhost:1210/api/v1/authenticate/login
+POST http://localhost:1202/api/v1/authenticate/login
 Content-Type: application/json
 
 {
-  "email": "namake2@gmail.com",
+  "email": "namake1@gmail.com",
   "password": "nama"
 }
-
-
-
